@@ -2,13 +2,14 @@ import { StyleSheet } from 'react-native'
 import { colors } from '../../styles/colors'
 
 export const styles = StyleSheet.create({
-    headerContainer: {
-        backgroundColor: colors.white,
+    bottomnNavContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+
         paddingVertical: 20,
-        borderBottomWidth: 1,
+
+        backgroundColor: colors.white,
+        borderTopWidth: 1,
         borderColor: colors.grayBorder,
-    },
-    logoHeader: {
-        alignSelf: 'center',
     },
 })

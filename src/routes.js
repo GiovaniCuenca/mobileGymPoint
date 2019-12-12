@@ -5,11 +5,11 @@ const Routes = () => {
     return (
         <Router>
             <Stack key='root' hideNavBar>
-                {require("./modules/signin")}
-                {require("./modules/checkin")}
+                {require("./modules/core")}
+                {require("./modules/checkins")}
             </Stack>
         </Router>
     )
 }
 
-export default Routes
+export { Routes }

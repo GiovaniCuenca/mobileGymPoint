@@ -15,7 +15,7 @@ const Login = () => {
                     <Image style={styles.logoLogin} source={require('../../../../assets/images/logo.png')} />
                     <TextInput style={styles.inputID} placeholder="Informe seu ID de cadastro" keyboardType="numeric" ></TextInput>
                     <Button
-                        onPress={() => Actions.popTo('homeCheckin')}
+                        onPress={() => Actions.push('home')}
                         text="Entrar no sistema"
                     />
                 </View>
