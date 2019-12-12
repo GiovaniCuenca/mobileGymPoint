@@ -1,0 +1,16 @@
+export const colors = {
+
+    white: '#FFFFFF',
+
+    gympoint: '#EE4E62',
+
+    verdeActive: '#42CB59',
+
+    grayBackground: '#F5F5F5',
+    grayBorder: '#DDDDDD',
+    grayInactive: '#999999',
+    grayText: '#666666',
+    grayStrong: '#444444',
+
+
+}
