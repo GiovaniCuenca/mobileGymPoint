@@ -1,7 +1,6 @@
 import React from 'react'
 import { Scene, Stack } from 'react-native-router-flux'
-import { Login } from './screens/Login'
-import { Home } from './screens/Home'
+import { Home, Login } from './screens'
 
 module.exports = (
     <Stack key="core" hideNavBar>

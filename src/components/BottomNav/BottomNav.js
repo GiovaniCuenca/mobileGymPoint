@@ -3,7 +3,10 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { styles } from './BottomNav.style'
 import { Actions } from 'react-native-router-flux'
 
-const BottomNav = () => {
+const BottomNav = ({ navigation }) => {
+    const navItemClick = url => navigation.navigate(url)
+
+
     return (
         <View style={styles.bottomnNavContainer}>
 
@@ -11,7 +14,7 @@ const BottomNav = () => {
                 <Text>Home</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => Actions.popTo('homecheckins')}>
+            <TouchableOpacity onPress={() => navItemClick('homecheckins')}>
                 <Text>Check-Ins</Text>
             </TouchableOpacity>
 
