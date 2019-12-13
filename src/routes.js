@@ -6,6 +6,7 @@ const Routes = () => {
         <Router>
             <Stack key='root' hideNavBar>
                 {require("./modules/core")}
+                {require("./modules/home")}
                 {require("./modules/checkins")}
             </Stack>
         </Router>

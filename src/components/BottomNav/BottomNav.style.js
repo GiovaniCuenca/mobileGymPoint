@@ -12,4 +12,14 @@ export const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: colors.grayBorder,
     },
+    bottomNavButtom: {
+        alignItems: 'center',
+        width: 100
+    },
+    bottomNavTextInactive: {
+        color: colors.grayInactive,
+    },
+    bottomNavTextActive: {
+        color: colors.gympoint,
+    },
 })
