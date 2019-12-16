@@ -1,4 +1,16 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
+import styles from './ListCheckin.style'
 
-import { colors } from '../../../../styles/colors'
+const ListCheckin = ({ id }) => {
+    return (
+        <>
+            <TouchableOpacity style={styles.checkinWrapper}>
+                <Text style={styles.textCheckin}>Check-In #{id} </Text>
+                <Text style={styles.textHour}>Hoje às 14:00</Text>
+            </TouchableOpacity>
+        </>
+    )
+}
+
+export { ListCheckin }

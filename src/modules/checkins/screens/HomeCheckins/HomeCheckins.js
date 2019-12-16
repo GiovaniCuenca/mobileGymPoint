@@ -2,9 +2,8 @@ import React from 'react'
 import { View, Text, FlatList } from 'react-native'
 import { styles } from './HomeCheckins.style.'
 import { contentWrapper } from '../../../../styles/reusable'
-import { CustomStatusBar } from '../../../../components/CustomStatusBar'
-import { Header } from '../../../../components/Header'
-import { BottomNav } from '../../../../components/BottomNav'
+import { CustomStatusBar, BottomNav, Header, Button } from '../../../../components'
+import { ListCheckin } from '../../components'
 
 const HomeCheckins = () => {
 
@@ -40,9 +39,14 @@ const HomeCheckins = () => {
 
             <View style={styles.content}>
                 <View style={contentWrapper}>
-                    <Text>Checkins</Text>
+
+                    <Button text="Novo check-in" onPress={() => {}} />
+
                     <FlatList
-                        renderItem={({ item }) => }
+                        style={{ marginTop: 20 }}
+                        data={checkinList}
+                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => <ListCheckin id={item.id} /> }
                     />
                 </View>
             </View>
