@@ -33,10 +33,10 @@ const BottomNav = () => {
 
             <TouchableOpacity
                 style={styles.bottomNavButtom}
-                onPress={() => {}}
+                onPress={() => Actions.push('helporders')}
             >
-                <Icon name="crop-square" size={25} color={colors.grayInactive} />
-                <Text style={styles.bottomNavText}>Pedir Ajuda</Text>
+                <Icon name="crop-square" size={25} color={activeScene == 'homeHelporders' ? colors.gympoint : colors.grayInactive} />
+                <Text style={activeScene == 'homeHelporders' ? styles.bottomNavTextActive : styles.bottomNavTextInactive}>Auxílios</Text>
             </TouchableOpacity>
 
         </View>

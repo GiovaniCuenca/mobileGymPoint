@@ -8,6 +8,7 @@ const Routes = () => {
                 {require("./modules/core")}
                 {require("./modules/home")}
                 {require("./modules/checkins")}
+                {require("./modules/helporders")}
             </Stack>
         </Router>
     )
