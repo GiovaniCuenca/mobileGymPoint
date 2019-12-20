@@ -26,6 +26,13 @@ export default StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         marginLeft: 5,
+        color: colors.grayInactive,
+    },
+    helporderTextStatusAnswered: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginLeft: 5,
+        color: colors.greenActive,
     },
     textHour: {
         fontSize: 14,

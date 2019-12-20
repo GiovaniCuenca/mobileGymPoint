@@ -81,7 +81,7 @@ const HomeHelpOrder = () => {
                         style={{ marginVertical: 20, paddingRight: 10 }}
                         data={helporderList}
                         keyExtractor={item => item.id}
-                        renderItem={({ item }) => <ListHelpOrder id={item.id} question={item.question}/> }
+                        renderItem={({ item }) => <ListHelpOrder id={item.id} question={item.question} /> }
                     />
                 </View>
             </View>

@@ -4,7 +4,10 @@ import styles from './ListHelpOrder.style'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { colors } from '../../../../styles'
 
-const ListHelpOrder = ({ id, question, answered }) => {
+const ListHelpOrder = ({ id, question }) => {
+    const answered = true;
+
+
     return (
         <>
             <TouchableOpacity style={styles.helporderCheckinWrapper}>
@@ -14,10 +17,7 @@ const ListHelpOrder = ({ id, question, answered }) => {
                     <View style={styles.helporderViewAnswer}>
                         <Icon name="crop-square" size={20} color={answered ? colors.greenActive : colors.grayInactive} />
 
-                        <Text
-                            style={styles.helporderTextStatus, { answered ? colors.greenActive : colors.grayInactive}}
-
-                        >
+                        <Text style={ answered ? styles.helporderTextStatusAnswered : styles.helporderTextStatus }>
                             Sem resposta
                         </Text>
                     </View>
