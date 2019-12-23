@@ -7,6 +7,12 @@ export const styles = StyleSheet.create({
         paddingVertical: 20,
         borderBottomWidth: 1,
         borderColor: colors.grayBorder,
+
+        paddingHorizontal: 15,
+
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     logoHeader: {
         alignSelf: 'center',

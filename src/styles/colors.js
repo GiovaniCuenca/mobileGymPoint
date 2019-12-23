@@ -4,6 +4,8 @@ export const colors = {
 
     gympoint: '#EE4E62',
 
+    redNegative: '#de3b3b',
+
     greenActive: '#42CB59',
 
     grayBackground: '#F5F5F5',
