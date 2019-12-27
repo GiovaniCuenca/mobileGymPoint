@@ -1,94 +1,81 @@
-import React from 'react'
-import { View, Text, FlatList } from 'react-native'
-import { styles } from './HomeHelpOrder.style'
-import { contentWrapper } from '../../../../styles/reusable'
-import { CustomStatusBar, BottomNav, Header, Button } from '../../../../components'
-import { ListHelpOrder } from '../../components'
+import React, {useState, useEffect} from 'react';
+import {View, FlatList} from 'react-native';
+import {styles} from './HomeHelpOrder.style';
+import {contentWrapper} from '../../../../styles/reusable';
+import {
+  CustomStatusBar,
+  BottomNav,
+  Header,
+  Button,
+} from '../../../../components';
+import {ListHelpOrder} from '../../components';
+import {parseISO, formatRelative} from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+
+import api from '../../../../services/api';
 
 const HomeHelpOrder = () => {
+  const [helpOrders, setHelpOrders] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-    const helporderList = [
-        {
-            id: 1,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 2,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 3,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 4,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 5,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 6,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 7,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 8,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 9,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 10,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 11,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 12,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 13,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-        {
-            id: 14,
-            question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet sed odio vel molestie. Proin fringilla erat id ultricies tristique. Pellentesque a rutrum diam. Pellentesque ut neque non nulla faucibus fermentum. Integer facilisis aliquet tincidunt. Suspendisse et tempor tellus. Vivamus vulputate, sem a vulputate tristique, eros tellus tincidunt leo, ut feugiat velit sem non diam. Nullam cursus fermentum lorem, in mattis sapien egestas iaculis. Praesent malesuada massa libero, ac eleifend lorem sollicitudin vehicula. Cras consequat libero eu orci lacinia, eu fermentum ligula blandit. Sed risus arcu, suscipit in risus rhoncus, interdum mattis lacus. Etiam ut consectetur tellus, vel condimentum eros. Maecenas in condimentum dolor. Nunc euismod luctus pharetra. Aenean tincidunt efficitur mattis. Aliquam quis massa vel velit dictum bibendum eget ut libero.'
-        },
-    ]
+  async function loadHelpOrders() {
+    const response = await api.get(`/students/39/help-orders`);
 
-    return (
-        <>
-            <CustomStatusBar />
+    setHelpOrders(
+      response.data.map(helporder => {
+        return {
+          ...helporder,
+          answered: helporder.answer === null ? false : true,
+          formattedDate: formatRelative(
+            parseISO(helporder.createdAt),
+            new Date(),
+            {
+              locale: ptBR,
+              addSuffix: true,
+            },
+          ),
+        };
+      }),
+    );
+    setIsLoading(false);
+  }
 
-            <Header />
+  useEffect(() => {
+    setIsLoading(true);
+    loadHelpOrders();
 
-            <View style={styles.content}>
-                <View style={contentWrapper}>
+    console.log(helpOrders);
+  }, []);
 
-                    <Button text="Novo pedido de auxílio" onPress={() => {}} />
+  return (
+    <>
+      <CustomStatusBar />
 
-                    <FlatList
-                        style={{ marginVertical: 20, paddingRight: 10 }}
-                        data={helporderList}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) => <ListHelpOrder id={item.id} question={item.question} /> }
-                    />
-                </View>
-            </View>
+      <Header backable />
 
-            <BottomNav />
-        </>
-    )
-}
+      <View style={styles.content}>
+        <View style={contentWrapper}>
+          <Button text="Novo pedido de auxílio" onPress={() => {}} />
 
-export { HomeHelpOrder }
+          <FlatList
+            style={{marginVertical: 20, paddingRight: 10}}
+            data={helpOrders}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <ListHelpOrder
+                id={item.id}
+                question={item.question}
+                date={item.formattedDate}
+                answered={item.answered}
+              />
+            )}
+          />
+        </View>
+      </View>
+
+      <BottomNav />
+    </>
+  );
+};
+
+export {HomeHelpOrder};

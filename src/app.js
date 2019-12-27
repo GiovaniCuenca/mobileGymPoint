@@ -1,10 +1,10 @@
-import React from 'react'
-import { Routes } from './routes'
+import React from 'react';
+import {Routes} from './routes';
+
+import './config/ReactotronConfig';
 
 const App = () => {
-    return (
-            <Routes />
-    )
-}
+  return <Routes />;
+};
 
-export { App }
+export {App};

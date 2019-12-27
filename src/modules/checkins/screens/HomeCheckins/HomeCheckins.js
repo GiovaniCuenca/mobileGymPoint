@@ -1,80 +1,109 @@
-import React from 'react'
-import { View, Text, FlatList } from 'react-native'
-import { styles } from './HomeCheckins.style.'
-import { contentWrapper } from '../../../../styles/reusable'
-import { CustomStatusBar, BottomNav, Header, Button } from '../../../../components'
-import { ListCheckin } from '../../components'
+import React, {useState, useEffect} from 'react';
+import {View, FlatList, Alert} from 'react-native';
+import {styles} from './HomeCheckins.style.';
+import {contentWrapper} from '../../../../styles/reusable';
+import {
+  CustomStatusBar,
+  BottomNav,
+  Header,
+  Button,
+  Loading,
+} from '../../../../components';
+import {ListCheckin} from '../../components';
+import {colors} from '../../../../styles';
+import {parseISO, formatRelative} from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+
+import api from '../../../../services/api';
 
 const HomeCheckins = () => {
+  const [checkIns, setCheckIns] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-    const checkinList = [
-        {
-            id: 1,
-        },
-        {
-            id: 2,
-        },
-        {
-            id: 3,
-        },
-        {
-            id: 4,
-        },
-        {
-            id: 5,
-        },
-        {
-            id: 6,
-        },
-        {
-            id: 7,
-        },
-        {
-            id: 8,
-        },
-        {
-            id: 9,
-        },
-        {
-            id: 10,
-        },
-        {
-            id: 11,
-        },
-        {
-            id: 12,
-        },
-        {
-            id: 13,
-        },
-        {
-            id: 14,
-        },
-    ]
+  async function loadCheckins() {
+    const response = await api.get(`/students/39/checkins`);
 
-    return (
-        <>
-            <CustomStatusBar />
+    setCheckIns(
+      response.data.map(checkin => {
+        return {
+          ...checkin,
+          formattedDate: formatRelative(
+            parseISO(checkin.created_at),
+            new Date(),
+            {
+              locale: ptBR,
+              addSuffix: true,
+            },
+          ),
+        };
+      }),
+    );
+    setIsLoading(false);
+  }
 
-            <Header />
+  useEffect(() => {
+    setIsLoading(true);
+    loadCheckins();
+  }, []);
 
-            <View style={styles.content}>
-                <View style={contentWrapper}>
+  async function newCheckIn() {
+    setIsLoading(true);
+    try {
+      await api.post(`/students/39/checkins`);
+    } catch (err) {
+      Alert.alert('Aviso', 'Número de Check-Ins atingidos no máximo período');
+    }
 
-                    <Button text="Novo check-in" onPress={() => {}} />
+    setIsLoading(false);
+    loadCheckins();
+  }
 
-                    <FlatList
-                        style={{ marginVertical: 20, paddingRight: 10 }}
-                        data={checkinList}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) => <ListCheckin id={item.id} /> }
-                    />
-                </View>
-            </View>
+  async function handleSubmitCheckin() {
+    Alert.alert(
+      'Você tem certeza?',
+      'Confirmar Check-In?',
+      [
+        {text: 'Não', style: 'cancel'},
+        {text: 'Sim', onPress: () => newCheckIn()},
+      ],
+      {cancelable: true},
+    );
+  }
 
-            <BottomNav />
-        </>
-    )
-}
+  return (
+    <>
+      <CustomStatusBar />
 
-export { HomeCheckins }
+      <Header backable />
+
+      <View style={styles.content}>
+        <View style={contentWrapper}>
+          <Button
+            text="Novo Check-In"
+            onPress={() => {
+              handleSubmitCheckin();
+            }}
+            loading={isLoading}
+          />
+
+          {isLoading ? (
+            <Loading size={30} color={colors.gympoint} />
+          ) : (
+            <FlatList
+              style={{marginVertical: 20, paddingRight: 10}}
+              data={checkIns}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <ListCheckin id={item.id} date={item.formattedDate} />
+              )}
+            />
+          )}
+        </View>
+      </View>
+
+      <BottomNav />
+    </>
+  );
+};
+
+export {HomeCheckins};

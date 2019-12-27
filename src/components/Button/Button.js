@@ -1,19 +1,25 @@
-import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { styles } from './Button.style'
+import React from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {styles} from './Button.style';
+import {Loading} from '../Loading';
+import {colors} from '../../styles';
 
-const Button = ({ text, onPress, ...props }) => {
-    return (
-        <View>
-            <TouchableOpacity
-                style={styles.buttonArea}
-                onPress={() => onPress()}
-                {...props}
-            >
-                <Text style={styles.buttonText}>{text}</Text>
-            </TouchableOpacity>
-        </View>
-    )
-}
+const Button = ({onPress, loading, text, ...props}) => {
+  return (
+    <View>
+      {loading ? (
+        <TouchableOpacity
+          style={[styles.buttonArea, ...props]}
+          onPress={() => onPress()}>
+          <Loading size={30} color={colors.white} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.buttonArea} onPress={() => onPress()}>
+          <Text style={styles.buttonText}>{text}</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+};
 
-export { Button }
+export {Button};
